@@ -110,10 +110,10 @@ const CLIENT_OPTIONS_SECRETS = [
  */
 
 class ZeebeAPI {
-  constructor(fs, ZeebeNode, flags, log = createLog('app:zeebe-api')) {
+  constructor(fs, Camunda8, flags, log = createLog('app:zeebe-api')) {
     this._fs = fs;
 
-    this._ZeebeNode = ZeebeNode;
+    this._Camunda8 = Camunda8;
     this._flags = flags;
     this._log = log;
 
@@ -331,8 +331,9 @@ class ZeebeAPI {
       url
     } = endpoint;
 
+    /** @type {Camunda8PlatformConfiguration} */
     let options = {
-      retry: false
+      zeebeGrpcSettings: { ZEEBE_GRPC_CLIENT_RETRY: false }
     };
 
     if (!values(ENDPOINT_TYPES).includes(type) || !values(AUTH_TYPES).includes(authType)) {
@@ -350,31 +351,37 @@ class ZeebeAPI {
     } else if (authType === AUTH_TYPES.OAUTH) {
       options = {
         ...options,
-        oAuth: {
-          url: endpoint.oauthURL,
-          audience: endpoint.audience,
-          scope: endpoint.scope,
-          clientId: endpoint.clientId,
-          clientSecret: endpoint.clientSecret,
-          cacheOnDisk: false
-        }
+        ZEEBE_ADDRESS: endpoint.url,
+        CAMUNDA_ZEEBE_OAUTH_AUDIENCE: endpoint.audience,
+        CAMUNDA_TOKEN_SCOPE: endpoint.scope,
+        CAMUNDA_ZEEBE_CLIENT_ID: endpoint.clientId,
+        CAMUNDA_ZEEBE_CLIENT_SECRET: endpoint.clientSecret,
+        CAMUNDA_TOKEN_DISK_CACHE_DISABLE: true
       };
     } else if (type === ENDPOINT_TYPES.CAMUNDA_CLOUD) {
       options = {
         ...options,
-        camundaCloud: {
-          clientId: endpoint.clientId,
-          clientSecret: endpoint.clientSecret,
-          clusterId: endpoint.clusterId,
-          cacheOnDisk: false,
-          ...(endpoint.clusterRegion ? { clusterRegion: endpoint.clusterRegion } : {})
-        },
-        useTLS: true
+        ZEEBE_ADDRESS: endpoint.camundaCloudClusterUrl,
+        CAMUNDA_ZEEBE_OAUTH_AUDIENCE: endpoint.audience,
+        CAMUNDA_TOKEN_SCOPE: endpoint.scope,
+        CAMUNDA_ZEEBE_CLIENT_ID: endpoint.clientId,
+        CAMUNDA_ZEEBE_CLIENT_SECRET: endpoint.clientSecret,
+        CAMUNDA_TOKEN_DISK_CACHE_DISABLE: true,
+        CAMUNDA_SECURE_CONNECTION: true
+      };
+    } else if (type === ENDPOINT_TYPES.SELF_HOSTED) {
+      options = {
+        ...options,
+        ZEEBE_ADDRESS: endpoint.url
       };
     }
 
     options = await this._withTLSConfig(url, options);
-    options = this._withPortConfig(url, options);
+
+    // do not override camunda cloud port (handled by the client)
+    if (type !== ENDPOINT_TYPES.CAMUNDA_CLOUD) {
+      options = this._withPortConfig(url, options);
+    }
 
     this._log.debug('creating client', {
       url,
@@ -389,7 +396,7 @@ class ZeebeAPI {
       )
     });
 
-    return new this._ZeebeNode.ZBClient(url, options);
+    return (new this._Camunda8(options)).getZeebeGrpcApiClient();
   }
 
   async _withTLSConfig(url, options) {
@@ -443,12 +450,6 @@ class ZeebeAPI {
   }
 
   _withPortConfig(url, options) {
-
-    // do not override camunda cloud port (handled by zeebe-node)
-    if (options.camundaCloud) {
-      return options;
-    }
-
     const parsedUrl = new URL(url);
 
     // do not override port if already set in url
