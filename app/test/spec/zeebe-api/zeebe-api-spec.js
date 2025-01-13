@@ -542,6 +542,7 @@ describe('ZeebeAPI', function() {
 
   describe('#deploy', function() {
 
+
     it('should set success=true for successful deployment', async function() {
 
       // given
@@ -569,12 +570,10 @@ describe('ZeebeAPI', function() {
       const error = new Error('test');
 
       const zeebeAPI = mockCamundaClient({
-        ZBClient: function() {
-          return {
-            deployResource: function() {
-              throw error;
-            }
-          };
+        ZBClient: {
+          deployResource: function() {
+            throw error;
+          }
         }
       });
 
@@ -601,12 +600,10 @@ describe('ZeebeAPI', function() {
       const error = new Error('test');
 
       const zeebeAPI = mockCamundaClient({
-        ZBClient: function() {
-          return {
-            deployResource: function() {
-              throw error;
-            }
-          };
+        ZBClient: {
+          deployResource: function() {
+            throw error;
+          }
         }
       });
 
@@ -662,10 +659,8 @@ describe('ZeebeAPI', function() {
         const deployResourceSpy = sinon.spy();
 
         const zeebeAPI = mockCamundaClient({
-          ZBClient: function() {
-            return {
-              deployResource: deployResourceSpy
-            };
+          ZBClient: {
+            deployResource: deployResourceSpy
           },
           fs: {
             readFile() {
@@ -698,10 +693,8 @@ describe('ZeebeAPI', function() {
         const deployResourceSpy = sinon.spy();
 
         const zeebeAPI = mockCamundaClient({
-          ZBClient: function() {
-            return {
-              deployResource: deployResourceSpy
-            };
+          ZBClient: {
+            deployResource: deployResourceSpy
           },
           fs: {
             readFile() {
@@ -735,10 +728,8 @@ describe('ZeebeAPI', function() {
         const deployResourceSpy = sinon.spy();
 
         const zeebeAPI = mockCamundaClient({
-          ZBClient: function() {
-            return {
-              deployResource: deployResourceSpy
-            };
+          ZBClient: {
+            deployResource: deployResourceSpy
           },
           fs: {
             readFile() {
@@ -776,10 +767,8 @@ describe('ZeebeAPI', function() {
         const deployResourceSpy = sinon.spy();
 
         const zeebeAPI = mockCamundaClient({
-          ZBClient: function() {
-            return {
-              deployResource: deployResourceSpy,
-            };
+          ZBClient: {
+            deployResource: deployResourceSpy,
           }
         });
 
@@ -806,10 +795,8 @@ describe('ZeebeAPI', function() {
         const deployResourceSpy = sinon.spy();
 
         const zeebeAPI = mockCamundaClient({
-          ZBClient: function() {
-            return {
-              deployResource: deployResourceSpy,
-            };
+          ZBClient: {
+            deployResource: deployResourceSpy,
           }
         });
 
@@ -837,10 +824,8 @@ describe('ZeebeAPI', function() {
         const deployResourceSpy = sinon.spy();
 
         const zeebeAPI = mockCamundaClient({
-          ZBClient: function() {
-            return {
-              deployResource: deployResourceSpy,
-            };
+          ZBClient: {
+            deployResource: deployResourceSpy,
           }
         });
 
@@ -868,10 +853,8 @@ describe('ZeebeAPI', function() {
         const deployResourceSpy = sinon.spy();
 
         const zeebeAPI = mockCamundaClient({
-          ZBClient: function() {
-            return {
-              deployResource: deployResourceSpy,
-            };
+          ZBClient: {
+            deployResource: deployResourceSpy,
           }
         });
 
@@ -898,10 +881,8 @@ describe('ZeebeAPI', function() {
         const deployResourceSpy = sinon.spy();
 
         const zeebeAPI = mockCamundaClient({
-          ZBClient: function() {
-            return {
-              deployResource: deployResourceSpy,
-            };
+          ZBClient: {
+            deployResource: deployResourceSpy,
           }
         });
 
@@ -929,10 +910,8 @@ describe('ZeebeAPI', function() {
         const deployResourceSpy = sinon.spy();
 
         const zeebeAPI = mockCamundaClient({
-          ZBClient: function() {
-            return {
-              deployResource: deployResourceSpy,
-            };
+          ZBClient: {
+            deployResource: deployResourceSpy,
           }
         });
 
@@ -960,10 +939,8 @@ describe('ZeebeAPI', function() {
         const deployResourceSpy = sinon.spy();
 
         const zeebeAPI = mockCamundaClient({
-          ZBClient: function() {
-            return {
-              deployResource: deployResourceSpy,
-            };
+          ZBClient: {
+            deployResource: deployResourceSpy,
           }
         });
 
@@ -990,10 +967,8 @@ describe('ZeebeAPI', function() {
         const deployResourceSpy = sinon.spy();
 
         const zeebeAPI = mockCamundaClient({
-          ZBClient: function() {
-            return {
-              deployResource: deployResourceSpy,
-            };
+          ZBClient: {
+            deployResource: deployResourceSpy,
           }
         });
 
@@ -1020,10 +995,8 @@ describe('ZeebeAPI', function() {
         const deployResourceSpy = sinon.spy();
 
         const zeebeAPI = mockCamundaClient({
-          ZBClient: function() {
-            return {
-              deployResource: deployResourceSpy,
-            };
+          ZBClient: {
+            deployResource: deployResourceSpy,
           }
         });
 
@@ -1050,10 +1023,8 @@ describe('ZeebeAPI', function() {
         const deployResourceSpy = sinon.spy();
 
         const zeebeAPI = mockCamundaClient({
-          ZBClient: function() {
-            return {
-              deployResource: deployResourceSpy,
-            };
+          ZBClient: {
+            deployResource: deployResourceSpy,
           }
         });
 
@@ -1081,10 +1052,8 @@ describe('ZeebeAPI', function() {
         const deployResourceSpy = sinon.spy();
 
         const zeebeAPI = mockCamundaClient({
-          ZBClient: function() {
-            return {
-              deployResource: deployResourceSpy,
-            };
+          ZBClient: {
+            deployResource: deployResourceSpy,
           }
         });
 
@@ -1112,10 +1081,8 @@ describe('ZeebeAPI', function() {
         const deployResourceSpy = sinon.spy();
 
         const zeebeAPI = mockCamundaClient({
-          ZBClient: function() {
-            return {
-              deployResource: deployResourceSpy,
-            };
+          ZBClient: {
+            deployResource: deployResourceSpy,
           }
         });
 
@@ -1143,10 +1110,8 @@ describe('ZeebeAPI', function() {
         const deployResourceSpy = sinon.spy();
 
         const zeebeAPI = mockCamundaClient({
-          ZBClient: function() {
-            return {
-              deployResource: deployResourceSpy,
-            };
+          ZBClient: {
+            deployResource: deployResourceSpy,
           }
         });
 
