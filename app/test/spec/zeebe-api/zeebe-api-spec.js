@@ -1910,6 +1910,34 @@ describe('ZeebeAPI', function() {
       await zeebeAPI.deploy(parameters);
 
       // then
+      expect(usedConfig).to.have.property('useTLS', true);
+    });
+
+
+    it('should have secure connection for no protocol endpoint (cloud)', async function() {
+
+      // given
+      let usedConfig;
+
+      const zeebeAPI = mockCamundaClient({
+        configSpy(config) {
+          usedConfig = config;
+        }
+      });
+
+      const parameters = {
+        endpoint: {
+          type: ENDPOINT_TYPES.CAMUNDA_CLOUD,
+          url: 'camunda.com'
+        }
+      };
+
+      // when
+      await zeebeAPI.deploy(parameters);
+
+      console.log(usedConfig, 'config');
+
+      // then
       expect(usedConfig).to.have.property('CAMUNDA_SECURE_CONNECTION', true);
     });
 
