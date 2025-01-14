@@ -1246,10 +1246,8 @@ describe('ZeebeAPI', function() {
         const deployResourceSpy = sinon.spy();
 
         const zeebeAPI = mockCamundaClient({
-          ZBClient: function() {
-            return {
-              deployResource: deployResourceSpy
-            };
+          ZBClient: {
+            deployResource: deployResourceSpy
           }
         });
 
