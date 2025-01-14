@@ -342,6 +342,7 @@ class ZeebeAPI {
     if (authType === AUTH_TYPES.BASIC) {
       options = {
         ...options,
+        ZEEBE_GRPC_ADDRESS: endpoint.url,
         CAMUNDA_AUTH_STRATEGY: 'BASIC',
         CAMUNDA_BASIC_AUTH_USERNAME: endpoint.basicAuthUsername,
         CAMUNDA_BASIC_AUTH_PASSWORD: endpoint.basicAuthPassword
