@@ -1168,9 +1168,10 @@ describe('ZeebeAPI', function() {
         const [ config ] = configSpy.getCall(0).args;
 
         // ZBClient is invoked accordingly
-        // expect(url).to.eql(TEST_URL); //TODO
+        expect(config.ZEEBE_GRPC_ADDRESS).to.eql(TEST_URL);
 
         expect(config).to.include.keys({
+          ZEEBE_GRPC_ADDRESS: 'url',
           CAMUNDA_AUTH_STRATEGY: 'basic',
           CAMUNDA_BASIC_AUTH_USERNAME: 'username',
           CAMUNDA_BASIC_AUTH_PASSWORD: 'password'
