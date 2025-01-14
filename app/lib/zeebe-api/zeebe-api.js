@@ -332,8 +332,7 @@ class ZeebeAPI {
     } = endpoint;
 
     let options = {
-      retry: false,
-      ZEEBE_GRPC_ADDRESS: endpoint.url
+      zeebeGrpcSettings: { ZEEBE_GRPC_CLIENT_RETRY: false }
     };
 
     if (!values(ENDPOINT_TYPES).includes(type) || !values(AUTH_TYPES).includes(authType)) {
