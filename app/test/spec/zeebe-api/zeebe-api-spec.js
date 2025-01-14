@@ -1189,16 +1189,14 @@ describe('ZeebeAPI', function() {
       it('should pass configuration', async function() {
 
         // given
+        const configSpy = sinon.spy();
         const deployResourceSpy = sinon.spy();
 
-        const ZBClientMock = sinon.spy(function() {
-          return {
-            deployResource: deployResourceSpy
-          };
-        });
-
         const zeebeAPI = mockCamundaClient({
-          ZBClient: ZBClientMock
+          configSpy,
+          ZBClient: {
+            deployResource: deployResourceSpy
+          }
         });
 
         // when
@@ -1218,17 +1216,19 @@ describe('ZeebeAPI', function() {
         });
 
         // then
-        const [ url, config ] = ZBClientMock.getCall(0).args;
+        const config = configSpy.getCall(0).args[0];
 
         // ZBClient is invoked accordingly
-        expect(url).to.eql(TEST_URL);
+        expect(config.ZEEBE_GRPC_ADDRESS).to.eql(TEST_URL);
 
-        expect(config.oAuth).to.include.keys({
-          audience: 'audience',
-          clientId: 'clientId',
-          clientSecret: 'clientSecret',
-          scope: 'scope',
-          url: 'oauthURL'
+        expect(config).to.include.keys({
+          CAMUNDA_AUTH_STRATEGY: 'OAUTH',
+          CAMUNDA_CONSOLE_OAUTH_AUDIENCE: 'audience',
+          ZEEBE_CLIENT_ID: 'clientId',
+          ZEEBE_CLIENT_SECRET: 'clientSecret',
+          CAMUNDA_TOKEN_SCOPE: 'scope',
+          CAMUNDA_OAUTH_URL: 'oauthURL',
+          CAMUNDA_TOKEN_DISK_CACHE_DISABLE: 'true'
         });
 
         // deployment is executed appropriately
