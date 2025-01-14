@@ -179,7 +179,7 @@ describe('ZeebeAPI', function() {
       });
 
 
-      it('for <endpoint-unavailable> (self-managed) - error 14', async function() { //TODO
+      it('for <endpoint-unavailable> (self-managed) - error 14', async function() { // TODO
 
         // given
         const zeebeAPI = mockCamundaClient({
@@ -2084,7 +2084,7 @@ describe('ZeebeAPI', function() {
       });
 
 
-      it.skip('should pass root certificate in oAuth config too', async function() { //TODO: not sure if still relevant
+      it.skip('should pass root certificate in oAuth config too', async function() { // TODO: not sure if still relevant
 
         // given
         const cert = readFile('./root-self-signed.pem');
@@ -2291,11 +2291,12 @@ describe('ZeebeAPI', function() {
       expect(createClientCall.args[ 1 ]).to.eql({
         url: 'http://localhost:26500',
         options:{
-          retry: false,
+          zeebeGrpcSettings: {
+            ZEEBE_GRPC_CLIENT_RETRY: false
+          },
           CAMUNDA_AUTH_STRATEGY: 'BASIC',
           CAMUNDA_BASIC_AUTH_USERNAME: '******',
           CAMUNDA_BASIC_AUTH_PASSWORD: '******',
-          ZEEBE_GRPC_ADDRESS: 'http://localhost:26500',
           useTLS: false
         }
       });
