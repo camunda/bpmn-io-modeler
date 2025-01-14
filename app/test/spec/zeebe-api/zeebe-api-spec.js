@@ -2292,10 +2292,10 @@ describe('ZeebeAPI', function() {
         url: 'http://localhost:26500',
         options:{
           retry: false,
-          basicAuth: {
-            username: '******',
-            password: '******'
-          },
+          CAMUNDA_AUTH_STRATEGY: 'BASIC',
+          CAMUNDA_BASIC_AUTH_USERNAME: '******',
+          CAMUNDA_BASIC_AUTH_PASSWORD: '******',
+          ZEEBE_GRPC_ADDRESS: 'http://localhost:26500',
           useTLS: false
         }
       });
@@ -2360,15 +2360,16 @@ describe('ZeebeAPI', function() {
       expect(createClientCall.args[ 1 ]).to.eql({
         url: 'http://localhost:26500',
         options:{
-          retry: false,
-          oAuth: {
-            url: 'oauthURL',
-            audience: 'audience',
-            scope: 'scope',
-            clientId: '******',
-            clientSecret: '******',
-            cacheOnDisk: false,
+          zeebeGrpcSettings: {
+            ZEEBE_GRPC_CLIENT_RETRY: false
           },
+          CAMUNDA_AUTH_STRATEGY: 'OAUTH',
+          CAMUNDA_TOKEN_DISK_CACHE_DISABLE: true,
+          CAMUNDA_TOKEN_SCOPE: 'scope',
+          ZEEBE_CLIENT_ID: '******',
+          ZEEBE_CLIENT_SECRET: '******',
+          CAMUNDA_CONSOLE_OAUTH_AUDIENCE: 'audience',
+          CAMUNDA_OAUTH_URL: 'oauthURL',
           useTLS: false
         }
       });
