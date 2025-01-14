@@ -332,7 +332,8 @@ class ZeebeAPI {
     } = endpoint;
 
     let options = {
-      retry: false
+      retry: false,
+      ZEEBE_GRPC_ADDRESS: endpoint.url
     };
 
     if (!values(ENDPOINT_TYPES).includes(type) || !values(AUTH_TYPES).includes(authType)) {
@@ -342,7 +343,6 @@ class ZeebeAPI {
     if (authType === AUTH_TYPES.BASIC) {
       options = {
         ...options,
-        ZEEBE_GRPC_ADDRESS: endpoint.url,
         CAMUNDA_AUTH_STRATEGY: 'BASIC',
         CAMUNDA_BASIC_AUTH_USERNAME: endpoint.basicAuthUsername,
         CAMUNDA_BASIC_AUTH_PASSWORD: endpoint.basicAuthPassword
@@ -351,7 +351,6 @@ class ZeebeAPI {
       options = {
         ...options,
         CAMUNDA_AUTH_STRATEGY: 'OAUTH',
-        ZEEBE_GRPC_ADDRESS: endpoint.url,
         ZEEBE_CLIENT_ID: endpoint.clientId,
         ZEEBE_CLIENT_SECRET: endpoint.clientSecret,
         CAMUNDA_OAUTH_URL: endpoint.oauthURL,
