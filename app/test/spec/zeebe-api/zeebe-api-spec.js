@@ -1277,7 +1277,7 @@ describe('ZeebeAPI', function() {
   });
 
 
-  describe.only('#getGatewayVersion', function() {
+  describe('#getGatewayVersion', function() {
 
     it('should set success=true if topology was retrieved', async function() {
 
