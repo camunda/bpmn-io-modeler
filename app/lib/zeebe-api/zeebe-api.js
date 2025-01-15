@@ -377,6 +377,7 @@ class ZeebeAPI {
         ...options,
         ZEEBE_ADDRESS: endpoint.url
       };
+    }
 
     options = await this._withTLSConfig(url, options);
 
