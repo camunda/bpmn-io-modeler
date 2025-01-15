@@ -344,6 +344,7 @@ class ZeebeAPI {
     if (authType === AUTH_TYPES.BASIC) {
       options = {
         ...options,
+        ZEEBE_ADDRESS: endpoint.url,
         CAMUNDA_AUTH_STRATEGY: 'BASIC',
         CAMUNDA_BASIC_AUTH_USERNAME: endpoint.basicAuthUsername,
         CAMUNDA_BASIC_AUTH_PASSWORD: endpoint.basicAuthPassword
@@ -362,6 +363,7 @@ class ZeebeAPI {
     } else if (type === ENDPOINT_TYPES.CAMUNDA_CLOUD) {
       options = {
         ...options,
+        ZEEBE_ADDRESS: endpoint.camundaCloudClusterUrl,
         CAMUNDA_CONSOLE_OAUTH_AUDIENCE: endpoint.audience,
         CAMUNDA_TOKEN_SCOPE: endpoint.scope,
         ZEEBE_CLIENT_ID: endpoint.clientId,
@@ -370,7 +372,11 @@ class ZeebeAPI {
         CAMUNDA_SECURE_CONNECTION: true,
         useTLS: true
       };
-    }
+    } else if (type === ENDPOINT_TYPES.SELF_HOSTED) {
+      options = {
+        ...options,
+        ZEEBE_ADDRESS: endpoint.url
+      };
 
     options = await this._withTLSConfig(url, options);
 
