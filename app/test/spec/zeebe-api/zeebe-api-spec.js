@@ -2294,6 +2294,7 @@ describe('ZeebeAPI', function() {
           zeebeGrpcSettings: {
             ZEEBE_GRPC_CLIENT_RETRY: false
           },
+          ZEEBE_GRPC_ADDRESS: 'http://localhost:26500',
           CAMUNDA_AUTH_STRATEGY: 'BASIC',
           CAMUNDA_BASIC_AUTH_USERNAME: '******',
           CAMUNDA_BASIC_AUTH_PASSWORD: '******',
@@ -2364,6 +2365,7 @@ describe('ZeebeAPI', function() {
           zeebeGrpcSettings: {
             ZEEBE_GRPC_CLIENT_RETRY: false
           },
+          ZEEBE_GRPC_ADDRESS: 'http://localhost:26500',
           CAMUNDA_AUTH_STRATEGY: 'OAUTH',
           CAMUNDA_TOKEN_DISK_CACHE_DISABLE: true,
           CAMUNDA_TOKEN_SCOPE: 'scope',
