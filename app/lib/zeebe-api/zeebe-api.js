@@ -113,7 +113,7 @@ class ZeebeAPI {
   constructor(fs, Camunda8, flags, log = createLog('app:zeebe-api')) {
     this._fs = fs;
 
-    this.Camunda8 = Camunda8;
+    this._Camunda8 = Camunda8;
     this._flags = flags;
     this._log = log;
 
@@ -333,6 +333,7 @@ class ZeebeAPI {
 
     let options = {
       ZEEBE_GRPC_ADDRESS: endpoint.url,
+      CAMUNDA_AUTH_STRATEGY: 'NONE',
       zeebeGrpcSettings: { ZEEBE_GRPC_CLIENT_RETRY: false }
     };
 
@@ -390,7 +391,7 @@ class ZeebeAPI {
         CLIENT_OPTIONS_SECRETS
       )
     });
-    return new this.Camunda8(options).getZeebeGrpcApiClient();
+    return (new this._Camunda8.Camunda8(options)).getZeebeGrpcApiClient();
   }
 
   async _withTLSConfig(url, options) {
