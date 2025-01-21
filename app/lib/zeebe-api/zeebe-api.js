@@ -363,14 +363,18 @@ class ZeebeAPI {
     } else if (type === ENDPOINT_TYPES.CAMUNDA_CLOUD) {
       options = {
         ...options,
-        ZEEBE_ADDRESS: endpoint.camundaCloudClusterUrl,
+        CAMUNDA_AUTH_STRATEGY: 'OAUTH',
+        CAMUNDA_OAUTH_URL: 'https://login.cloud.camunda.io/oauth/token',
+        ZEEBE_ADDRESS: endpoint.zeebeAddress,
         CAMUNDA_CONSOLE_OAUTH_AUDIENCE: endpoint.audience,
         CAMUNDA_TOKEN_SCOPE: endpoint.scope,
         ZEEBE_CLIENT_ID: endpoint.clientId,
         ZEEBE_CLIENT_SECRET: endpoint.clientSecret,
         CAMUNDA_TOKEN_DISK_CACHE_DISABLE: true,
         CAMUNDA_SECURE_CONNECTION: true,
-        useTLS: true
+        useTLS: true,
+        CAMUNDA_CONSOLE_CLIENT_ID: endpoint.clientId,
+        CAMUNDA_CONSOLE_CLIENT_SECRET: endpoint.clientSecret
       };
     } else if (type === ENDPOINT_TYPES.SELF_HOSTED) {
       options = {
