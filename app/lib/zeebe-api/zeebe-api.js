@@ -191,8 +191,6 @@ class ZeebeAPI {
 
       const response = await client.deployResource(resource);
 
-      this._log.debug('succesfully deployed', response);
-
       return {
         success: true,
         response: response

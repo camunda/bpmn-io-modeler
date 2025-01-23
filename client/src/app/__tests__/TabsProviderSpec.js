@@ -1180,6 +1180,7 @@ describe('TabsProvider', function() {
       expect(tabsProvider.hasProvider('rpa')).to.be.false;
     });
 
+
     it('should disable HTTL hint', async function() {
 
       // given
