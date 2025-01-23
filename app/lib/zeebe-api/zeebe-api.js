@@ -191,6 +191,8 @@ class ZeebeAPI {
 
       const response = await client.deployResource(resource);
 
+      this._log.debug('succesfully deployed', response);
+
       return {
         success: true,
         response: response
@@ -667,6 +669,12 @@ function getResource(parameters, contents, resourceName) {
   } else if (resourceType === RESOURCE_TYPES.DMN) {
     resource.decision = contents;
   } else if (resourceType === RESOURCE_TYPES.FORM) {
+    resource.form = contents;
+  } else {
+
+    // Fallback for unknown resource, cf.
+    // https://github.com/camunda-community-hub/zeebe-client-node-js/blob/7969ce1808c96a87519cb1a3f279287f30637c4b/src/zb/ZBClient.ts#L873-L886
+
     resource.form = contents;
   }
 
