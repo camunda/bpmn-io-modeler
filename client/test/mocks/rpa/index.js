@@ -31,7 +31,8 @@ export class RPACodeEditor {
   }
 
   editor = {
-    execCommand: () => {},
+    trigger: () => {},
+    getAction: () => {},
     getModel: () => ({
       canRedo: () => this.canRedo,
       canUndo: () => this.canUndo
