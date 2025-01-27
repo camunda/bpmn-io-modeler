@@ -352,6 +352,7 @@ class ZeebeAPI {
     } else if (authType === AUTH_TYPES.OAUTH) {
       options = {
         ...options,
+        ZEEBE_ADDRESS: endpoint.urlWithoutProtocol,
         CAMUNDA_AUTH_STRATEGY: 'OAUTH',
         ZEEBE_CLIENT_ID: endpoint.clientId,
         ZEEBE_CLIENT_SECRET: endpoint.clientSecret,
