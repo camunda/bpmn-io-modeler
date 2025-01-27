@@ -99,7 +99,8 @@ function getEndpointConfiguration(endpoint) {
       return {
         type: ENDPOINT_TYPES.SELF_HOSTED,
         authType: AUTH_TYPES.NONE,
-        url: contactPointWithoutProtocol
+        url: contactPoint,
+        urlWithoutProtocol: contactPointWithoutProtocol
       };
 
     case AUTH_TYPES.BASIC:

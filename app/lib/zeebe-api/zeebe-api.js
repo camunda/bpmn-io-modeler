@@ -328,7 +328,7 @@ class ZeebeAPI {
     const {
       type,
       authType = AUTH_TYPES.NONE,
-      url
+      url,
     } = endpoint;
 
     let options = {
@@ -379,7 +379,7 @@ class ZeebeAPI {
     } else if (type === ENDPOINT_TYPES.SELF_HOSTED) {
       options = {
         ...options,
-        ZEEBE_ADDRESS: endpoint.url,
+        ZEEBE_ADDRESS: endpoint.urlWithoutProtocol,
         CAMUNDA_SECURE_CONNECTION: false
       };
     }
