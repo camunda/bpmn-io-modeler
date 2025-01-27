@@ -84,6 +84,7 @@ function getEndpointConfiguration(endpoint) {
     basicAuthPassword,
     oauthURL,
     contactPoint,
+    contactPointWithoutProtocol,
     camundaCloudClientId,
     camundaCloudClientSecret,
     camundaCloudClusterId,
@@ -98,7 +99,7 @@ function getEndpointConfiguration(endpoint) {
       return {
         type: ENDPOINT_TYPES.SELF_HOSTED,
         authType: AUTH_TYPES.NONE,
-        url: contactPoint
+        url: contactPointWithoutProtocol
       };
 
     case AUTH_TYPES.BASIC:

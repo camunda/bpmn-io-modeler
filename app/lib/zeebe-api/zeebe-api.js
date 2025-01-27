@@ -379,7 +379,8 @@ class ZeebeAPI {
     } else if (type === ENDPOINT_TYPES.SELF_HOSTED) {
       options = {
         ...options,
-        ZEEBE_ADDRESS: endpoint.url
+        ZEEBE_ADDRESS: endpoint.url,
+        CAMUNDA_SECURE_CONNECTION: false
       };
     }
 
