@@ -1,0 +1,11 @@
+@use '@carbon/react/scss/components';
+
+// @carbon/color
+.color {
+  color: colors.$red-50;
+}
+
+// @carbon/themes
+.theme {
+  color: themes.$token-01;
+}
