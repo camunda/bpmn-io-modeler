@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "main": "index.js",
   "scripts": {
-    "all": "webpack"
+    "all": "webpack",
+    "dev": "webpack --watch"
   },
   "description": "Camunda Modeler test plugin using Carbon styles",
   "devDependencies": {

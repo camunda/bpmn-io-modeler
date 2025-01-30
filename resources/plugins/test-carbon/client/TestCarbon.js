@@ -12,7 +12,7 @@ import React, { useEffect } from 'camunda-modeler-plugin-helpers/react';
 
 import { Fill, Modal } from 'camunda-modeler-plugin-helpers/components';
 
-import { Button } from '@carbon/react';
+import { Button, Theme } from '@carbon/react';
 
 import './TestCarbon.scss';
 
@@ -44,18 +44,19 @@ export function TestCarbon() {
 
 function CarbonModal({ onClose }) {
 
-  return <Modal>
-    <Modal.Title>Test Carbon</Modal.Title>
-    <Modal.Body>
-      <h1>Carbon</h1>
-      <p>
-        This is a Carbon modal.
-      </p>
-      <p className="color">This is supposed to be colorful</p>
-      <p className="theme">This is supposed to be themed</p>
-    </Modal.Body>
-    <Modal.Footer>
-      <Button onClick={ onClose }>OK</Button>
-    </Modal.Footer>
-  </Modal>;
+  return (
+    <Modal className="modal-test-carbon">
+      <Modal.Title>Test Carbon</Modal.Title>
+      <Modal.Body>
+        <h1>Carbon</h1>
+        <Theme theme="g90">
+          <p className="carbon-padding">Carbon is cool</p>
+        </Theme>
+        <p className="carbon-color">Carbon is colorful</p>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={ onClose }>OK</Button>
+      </Modal.Footer>
+    </Modal>
+  );
 }

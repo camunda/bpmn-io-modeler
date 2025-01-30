@@ -1,11 +1,14 @@
-@use '@carbon/react/scss/components';
+@use '@carbon/layout';
+@use '@carbon/colors';
 
-// @carbon/color
-.color {
-  color: colors.$red-50;
-}
+@use '@carbon/react/scss/components/button';
 
-// @carbon/themes
-.theme {
-  color: themes.$token-01;
-}
+.modal-test-carbon {
+  .carbon-padding {
+    padding: layout.$spacing-05;
+  }
+
+  .carbon-color {
+    color: colors.$blue-50;
+  }
+}  
