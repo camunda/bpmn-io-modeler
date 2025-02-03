@@ -12,11 +12,11 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import classnames from 'classnames';
 
-import { Fill } from '../../slot-fill';
+import { Fill } from '../../app/slot-fill';
 
-import { Overlay, Section } from '../../../shared/ui';
+import { Overlay, Section } from '../../shared/ui';
 
-import ProcessApplicationIcon from '../../../../resources/icons/file-types/ProcessApplication.svg';
+import ProcessApplicationIcon from '../../../resources/icons/file-types/ProcessApplication.svg';
 
 import * as css from './ProcessApplicationsStatusBar.less';
 
@@ -29,6 +29,7 @@ export default function ProcessApplicationsStatusBar(props) {
     activeTab,
     onOpen,
     processApplication,
+    processApplicationItems,
     tabsProvider
   } = props;
 
@@ -42,7 +43,11 @@ export default function ProcessApplicationsStatusBar(props) {
     return null;
   }
 
-  const { items } = processApplication;
+  const onClick = (path) => {
+    onOpen(path);
+
+    setIsOpen(false);
+  };
 
   return <>
     <Fill slot="status-bar__file" group="0_process-application">
@@ -55,25 +60,34 @@ export default function ProcessApplicationsStatusBar(props) {
         <Section>
           <Section.Header>
             Process application
+            <br />
+            <span className="process-application-overlay-path" title={ processApplication.file.path }>{ processApplication.file.path }</span>
+          </Section.Header>
+        </Section>
+        <Section>
+          <Section.Header>
+            Files
           </Section.Header>
           <Section.Body>
-            <ul>
+            <ul className="files" role="menu">
               {
-                sortByType(items.filter(item => item.metadata.type !== 'processApplication')).map(item => {
+                sortByType(processApplicationItems.filter(item => item.metadata.type !== 'processApplication')).map(item => {
                   const provider = tabsProvider.getProvider(item.metadata.type);
 
                   const Icon = provider.getIcon(item.file);
 
                   const { file } = item;
 
-                  if (file.path === activeTab.file.path) {
-                    return <li className="link active" key={ file.path } title={ file.path }>
-                      <Icon width="16" height="16" />{ file.name }
-                    </li>;
-                  }
+                  const isActiveTab = activeTab && activeTab.file.path === file.path;
 
-                  return <li className="link" onClick={ () => onOpen(file.path) } key={ file.path } title={ file.path }>
-                    <Icon width="16" height="16" />{ file.name }
+                  return <li role="menuitem" className={
+                    classnames('file', {
+                      'file-active': isActiveTab
+                    })
+                  } key={ file.path } title={ file.path }>
+                    <button type="button" onClick={ () => onClick(file.path) } disabled={ isActiveTab }>
+                      <Icon className="file-icon" width="16" height="16" /><span className="file-name">{ file.name }</span>
+                    </button>
                   </li>;
                 })
               }

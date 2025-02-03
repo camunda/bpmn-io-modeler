@@ -95,7 +95,6 @@ export default class TabLinks extends PureComponent {
       onContextMenu,
       onClose,
       placeholder,
-      processApplication,
       className,
       isDirty = () => false
     } = this.props;
@@ -110,14 +109,11 @@ export default class TabLinks extends PureComponent {
               const dirty = isDirty(tab);
               const active = tab === activeTab;
 
-              const isProcessApplication = processApplication && processApplication.items.some(item => item.file.path === tab.file.path);
-
               return (
                 <Tab
                   key={ tab.id }
                   tab={ tab }
                   active={ active }
-                  processApplication={ isProcessApplication }
                   dirty={ dirty }
                   getTabIcon={ getTabIcon }
                   onClose={ onClose }
@@ -158,7 +154,6 @@ function Tab(props) {
     onClose,
     onContextMenu,
     onSelect,
-    processApplication,
     tab
   } = props;
 
@@ -183,6 +178,10 @@ function Tab(props) {
     return () => resizeObserver.disconnect();
   }, [ tabNode ]);
 
+  const { group } = tab;
+
+  console.log('group', group);
+
   return (
     <div
       tabIndex="0"
@@ -193,8 +192,7 @@ function Tab(props) {
         'tab--active': active,
         'tab--dirty': dirty,
         'tab--small': small,
-        'tab--smaller': smaller,
-        'tab--process-application': processApplication
+        'tab--smaller': smaller
       }) }
       onClick={ (event) => onSelect(tab, event) }
       onAuxClick={ (event) => {

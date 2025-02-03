@@ -8,4 +8,4 @@
  * except in compliance with the MIT License.
  */
 
-export { default as ProcessApplicationsStatusBar } from './ProcessApplicationsStatusBar';
+export { default } from './ProcessApplicationsPlugin';

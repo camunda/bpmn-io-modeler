@@ -273,7 +273,7 @@ class MenuBuilder {
     this.menu.append(new MenuItem({
       label: 'New Process Application',
       click: function() {
-        app.emit('menu:action', 'create-process-application');
+        app.emit('menu:action', 'emit-event', { type: 'create-process-application' });
       }
     }));
 

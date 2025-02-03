@@ -65,9 +65,6 @@ import pSeries from 'p-series';
 
 import History from './History';
 
-import ProcessApplications from './process-applications';
-import { ProcessApplicationsStatusBar } from './process-applications/components';
-
 import { PluginsRoot } from './plugins';
 
 import * as css from './App.less';
@@ -96,7 +93,6 @@ const INITIAL_STATE = {
   dirtyTabs: {},
   unsavedTabs: {},
   recentTabs: [],
-  processApplication: null,
   layout: {},
   tabs: [],
   tabState: {},
@@ -129,33 +125,6 @@ export class App extends PureComponent {
     this.recentTabs = new RecentTabs({
       setState: value => this.setState({ recentTabs: value }),
       config: this.getGlobal('config')
-    });
-
-    const processApplications = this.processApplications = new ProcessApplications(this);
-
-    this.getGlobal('backend').on('file-context:changed', (_, items) => {
-      processApplications.emit('items-changed', items);
-    });
-
-    this.on('app.activeTabChanged', ({ activeTab }) => {
-      processApplications.emit('activeTab-changed', activeTab);
-    });
-
-    processApplications.on('changed', () => {
-      const hasOpenProcessApplication = processApplications.hasOpen();
-
-      if (!hasOpenProcessApplication) {
-        this.setState({
-          processApplication: null
-        });
-      } else {
-        this.setState({
-          processApplication: {
-            ...processApplications.getOpen(),
-            items: processApplications.getItems()
-          }
-        });
-      }
     });
 
     this.tabRef = React.createRef();
@@ -1779,41 +1748,7 @@ export class App extends PureComponent {
     return this.getGlobal('dialog').show(options);
   }
 
-  async showCreateProcessApplicationDialog() {
-    const dialog = this.getGlobal('dialog');
-
-    const [ directoryPath ] = await dialog.showOpenFilesDialog({
-      properties: [ 'openDirectory' ],
-      title: 'Create Process Application'
-    });
-
-    return directoryPath;
-  }
-
-  /**
-   * Create and save new process application.
-   */
-  async createProcessApplication() {
-    const directoryPath = await this.showCreateProcessApplicationDialog();
-
-    if (!directoryPath) {
-      return;
-    }
-
-    const file = {
-      name: '.process-application',
-      contents: JSON.stringify({}, null, 2),
-      path: null
-    };
-
-    const fileSystem = this.getGlobal('fileSystem');
-
-    await fileSystem.writeFile(`${directoryPath}/${file.name}`, file);
-
-    this.getGlobal('backend').send('file-context:file-opened', `${directoryPath}/${file.name}`, undefined);
-  }
-
-  triggerAction = failSafe((action, options) => {
+  triggerAction = failSafe((action, options = {}) => {
 
     const {
       activeTab
@@ -1821,10 +1756,6 @@ export class App extends PureComponent {
 
 
     log('App#triggerAction %s %o', action, options);
-
-    if (action === 'create-process-application') {
-      return this.createProcessApplication();
-    }
 
     if (action === 'lint-tab') {
       const {
@@ -1884,6 +1815,12 @@ export class App extends PureComponent {
     }
 
     if (action === 'open-diagram') {
+      const { path } = options;
+
+      if (path) {
+        return this.readFileFromPath(path).then(file => this.openFiles([ file ]));
+      }
+
       return this.showOpenFilesDialog();
     }
 
@@ -2197,7 +2134,7 @@ export class App extends PureComponent {
                     title: 'Welcome Screen'
                   } }
                   draggable
-                  processApplication={ this.state.processApplication }
+                  processApplication={ null }
                 />
 
                 <TabContainer className="main">
@@ -2247,17 +2184,6 @@ export class App extends PureComponent {
 
               <StatusBar />
 
-              <ProcessApplicationsStatusBar
-                activeTab={ activeTab }
-                processApplication={ this.state.processApplication }
-                onOpen={ async (path) => {
-                  const files = await this.readFileList([ path ]);
-
-                  await this.openFiles(files);
-                } }
-                tabsProvider={ this.props.tabsProvider }
-              />
-
               <PluginsRoot
                 app={ this }
                 plugins={ this.plugins }
@@ -2283,11 +2209,13 @@ export class App extends PureComponent {
 
   _getNewFileItems = () => {
     let items = [
+
+      // TODO: make this configurable
       {
         text: 'Process application',
         group: 'Camunda 8',
         icon: ProcessApplicationIcon,
-        onClick: () => this.triggerAction('create-process-application')
+        onClick: () => this.triggerAction('emit-event', { type: 'create-process-application' })
       }
     ];
 
