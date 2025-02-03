@@ -178,6 +178,10 @@ function Tab(props) {
     return () => resizeObserver.disconnect();
   }, [ tabNode ]);
 
+  const { group } = tab;
+
+  console.log('group', group);
+
   return (
     <div
       tabIndex="0"
